@@ -3,14 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { RocketIcon } from "@radix-ui/react-icons";
+import { DotIcon, RocketIcon } from "@radix-ui/react-icons";
 import { useSession } from "next-auth/react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import AuthDrawer from "@/components/auth/auth-drawer";
 import ProfileDropdown from "@/components/auth/profile-dropdown";
-import { ModeToggle } from "@/components/layout/mode-toggle";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -24,12 +23,12 @@ export default function Navbar() {
         aria-label="Global"
       >
         <div className="flex items-center gap-x-12">
-          <Link href="/" className="flex items-center space-x-2">
-            <RocketIcon className="h-5 w-5 text-foreground" />
+          <Link href="/" className="flex items-center">
+            <DotIcon className="h-5 w-5 text-foreground" />
             <span className="overflow-auto font-semibold leading-tight tracking-tight">
-              OSS Hub
+              The Point
             </span>
-            <Badge variant="secondary" className="rounded-sm">
+            <Badge variant="secondary" className="rounded-sm ml-2">
               Beta
             </Badge>
           </Link>
@@ -59,7 +58,6 @@ export default function Navbar() {
         </div>
         <div className="flex items-center space-x-1">
           {session ? <ProfileDropdown /> : <AuthDrawer text="Log In" />}
-          <ModeToggle />
         </div>
       </nav>
     </header>
