@@ -45,6 +45,20 @@ export default function Navbar() {
             >
               Create
             </Link>
+            {session ? (
+              <Link
+                href="/profile"
+                prefetch={false}
+                className={cn(
+                  "text-sm font-light transition-colors hover:text-foreground/80",
+                  pathname === "/profile"
+                    ? "text-foreground"
+                    : "text-foreground/60",
+                )}
+              >
+                Profile
+              </Link>
+            ) : null}
           </div>
         </div>
         <div className="flex lg:hidden">

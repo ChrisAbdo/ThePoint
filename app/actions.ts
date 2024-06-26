@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 
 import { prisma } from "@/prisma/db";
 import { authOptions } from "@/lib/auth/auth-options";
+import { redirect } from "next/navigation";
 
 let sessionCache: any = null;
 
@@ -18,6 +19,7 @@ async function getSession() {
 export async function createPoint(formData: FormData) {
   const session = await getSession();
 
+  const title = String(formData.get("title"));
   const content = String(formData.get("content"));
   const contentObject = JSON.parse(content);
 
@@ -26,7 +28,7 @@ export async function createPoint(formData: FormData) {
   try {
     await prisma.point.create({
       data: {
-        title: "New Project222",
+        title,
         content: contentObject, // Store the parsed object, not the string
         authorId,
       },
@@ -36,5 +38,6 @@ export async function createPoint(formData: FormData) {
       error: error.message,
     };
   }
-  revalidatePath("/");
+  revalidatePath("/profile");
+  redirect("/profile");
 }

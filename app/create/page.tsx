@@ -10,14 +10,12 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
-import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export default function Home() {
   const { data: session } = useSession();
   const [value, setValue] = useState<JSONContent>(defaultValue);
-  const { pending } = useFormStatus();
   return (
     <div className="mt-12">
       <div className="space-y-12">
@@ -65,7 +63,7 @@ export default function Home() {
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <Input
-                      name="name"
+                      name="title"
                       placeholder="How to make a real-time chat app with Next.js"
                     />
                   </div>
@@ -101,14 +99,8 @@ export default function Home() {
               </div>
             </div>
             <div className="mt-8">
-              {/* <button
-                type="submit"
-                className="float-right inline-flex items-center px-4 py-2 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-primary hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-              >
-                {pending ? "Creating..." : "Create Point"}
-              </button> */}
-              <Button type="submit" className="float-right" disabled={pending}>
-                {pending ? "Creating..." : "Create Point"}
+              <Button type="submit" className="float-right">
+                Create
               </Button>
             </div>
           </form>
