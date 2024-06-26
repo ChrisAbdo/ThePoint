@@ -14,7 +14,7 @@ export default async function Point({ params }: { params: { id: string } }) {
   });
   return (
     <div>
-      <div className="bg-white py-6">
+      <div className="bg-background py-6">
         <div className="mt-6 flex items-center whitespace-nowrap gap-2 text-muted-foreground font-light text-sm">
           <p>Shared by</p>
           <div className="flex gap-1 items-center">
@@ -26,7 +26,7 @@ export default async function Point({ params }: { params: { id: string } }) {
             <p>{point?.author.name}</p>
           </div>
         </div>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-primary sm:text-4xl">
           {point?.title}
         </h1>
 

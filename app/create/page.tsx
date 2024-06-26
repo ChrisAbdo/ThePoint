@@ -20,10 +20,10 @@ export default function Home() {
     <div className="mt-12">
       <div className="space-y-12">
         <div className="pb-12">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
+          <h2 className="text-base font-semibold leading-7 text-primary">
             Create a new point
           </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">
             Anyone with the link can view this point.
           </p>
 
@@ -56,7 +56,7 @@ export default function Home() {
               <div className="sm:col-span-4">
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-sm font-medium leading-6 text-primary"
                 >
                   Title
                 </label>
@@ -73,7 +73,7 @@ export default function Home() {
               <div className="col-span-full">
                 <label
                   htmlFor="about"
-                  className="block text-sm font-medium leading-6 text-gray-900"
+                  className="block text-sm font-medium leading-6 text-primary"
                 >
                   Content
                 </label>

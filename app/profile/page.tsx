@@ -18,14 +18,6 @@ export default async function Profile() {
   return (
     <div>
       <ProfileHeader />
-      {/* <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
-            {post.title}
-            <h1>{JSON.stringify(post.content)}</h1>
-          </li>
-        ))}
-      </ul> */}
       <DisplayPosts posts={posts} />
     </div>
   );

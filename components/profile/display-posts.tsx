@@ -9,21 +9,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function DisplayPosts({ posts }) {
+export default function DisplayPosts({ posts }: { posts: any[] }) {
   return (
-    <ul role="list" className="divide-y divide-gray-100">
+    <ul role="list" className="divide-y">
       {posts.map((post) => (
         <li
           key={post.id}
           className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 py-5 sm:flex-nowrap"
         >
           <div>
-            <p className="text-sm font-semibold leading-6 text-gray-900">
+            <p className="text-sm font-semibold leading-6 text-primary">
               <a href={`/point/${post.id}`} className="hover:underline">
                 {post.title}
               </a>
             </p>
-            <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-gray-500">
+            <div className="mt-1 flex items-center gap-x-2 text-xs leading-5 text-muted-foreground">
               <p>
                 <time dateTime={post.dateTime}>
                   {formatDistanceToNow(new Date(post.createdAt), {
