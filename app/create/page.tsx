@@ -8,15 +8,19 @@ import { createPoint } from "../actions";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSession } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
+import { useSession, getSession } from "next-auth/react";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [value, setValue] = useState<JSONContent>(defaultValue);
+
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
   return (
     <div className="mt-12">
       <div className="space-y-12">

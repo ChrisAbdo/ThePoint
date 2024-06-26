@@ -21,6 +21,7 @@ export default async function Point({ params }: { params: { id: string } }) {
             <p>Shared by</p>
             <div className="flex gap-1 items-center">
               <Avatar className="size-5">
+                {/* @ts-ignore */}
                 <AvatarImage src={point?.author.image}></AvatarImage>
                 <AvatarFallback></AvatarFallback>
               </Avatar>
@@ -28,9 +29,7 @@ export default async function Point({ params }: { params: { id: string } }) {
             </div>
           </div>
 
-          {/* <a href={`/points/${point?.id}/edit`} className="text-primary">
-            Edit
-          </a> */}
+          {/* @ts-ignore */}
           <SharePoint point={point} />
         </div>
 

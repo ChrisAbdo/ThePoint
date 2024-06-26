@@ -20,6 +20,7 @@ export default function AuthDrawer({ text }: { text?: string }) {
       <DrawerTrigger asChild>
         <Button>{text}</Button>
       </DrawerTrigger>
+      {/* @ts-ignore */}
       <DrawerContent className="h-1/2">
         <DrawerHeader className="mx-auto mt-4 max-w-lg gap-4">
           <DrawerTitle>Welcome to OSS Hub</DrawerTitle>
