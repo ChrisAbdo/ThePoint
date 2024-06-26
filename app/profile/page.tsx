@@ -1,4 +1,5 @@
 import DisplayPosts from "@/components/profile/display-posts";
+import ProfileHeader from "@/components/profile/header";
 import { authOptions } from "@/lib/auth/auth-options";
 import { prisma } from "@/prisma/db";
 import { getServerSession } from "next-auth/next";
@@ -16,8 +17,7 @@ export default async function Profile() {
   });
   return (
     <div>
-      <h1>Profile</h1>
-      <h2>Posts</h2>
+      <ProfileHeader />
       {/* <ul>
         {posts.map((post) => (
           <li key={post.id}>

@@ -19,7 +19,7 @@ export default function DisplayPosts({ posts }) {
         >
           <div>
             <p className="text-sm font-semibold leading-6 text-gray-900">
-              <a href={post.id} className="hover:underline">
+              <a href={`/point/${post.id}`} className="hover:underline">
                 {post.title}
               </a>
             </p>
@@ -35,22 +35,22 @@ export default function DisplayPosts({ posts }) {
           </div>
           <dl className="flex w-full flex-none justify-between gap-x-8 sm:w-auto">
             <div className="space-x-2 items-center flex">
-              <Link href={post.id}>
+              <Link href={`/point/${post.id}`}>
                 <Button variant="secondary">View</Button>
               </Link>
-              {/* <Button variant="ghost" size="icon">
-                <DotsHorizontalIcon className="h-5 w-5" />
-              </Button> */}
+
               <DropdownMenu>
-                {/*  */}
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
-                    <DotsHorizontalIcon className="h-5 w-5" />
+                    <DotsHorizontalIcon className="size-5" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  {/* @ts-ignore */}
                   <DropdownMenuItem>Copy Link</DropdownMenuItem>
+                  {/* @ts-ignore */}
                   <DropdownMenuItem>Edit</DropdownMenuItem>
+                  {/* @ts-ignore */}
                   <DropdownMenuItem>Delete</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
