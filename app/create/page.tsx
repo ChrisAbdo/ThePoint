@@ -18,9 +18,6 @@ export default function Home() {
   const { data: session, status } = useSession();
   const [value, setValue] = useState<JSONContent>(defaultValue);
 
-  if (status === "unauthenticated") {
-    redirect("/login");
-  }
   return (
     <div className="mt-12">
       <div className="space-y-12">
