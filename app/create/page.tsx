@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -31,7 +32,7 @@ export default function Home() {
           <Separator className="mt-2" />
 
           <div className="mt-6 flex items-center whitespace-nowrap gap-2 text-muted-foreground font-light text-sm">
-            <p>Shared by</p>
+            <p>Created by</p>
             <div className="flex gap-1 items-center">
               <Avatar className="size-5">
                 <AvatarImage src={session?.user?.image} />
@@ -49,6 +50,7 @@ export default function Home() {
                 toast.error("Something went wrong. Please try again.");
               } else {
                 toast.success("Snippet created successfully. Redirecting...");
+                redirect("/profile");
               }
             }}
           >
