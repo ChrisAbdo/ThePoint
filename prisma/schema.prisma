@@ -60,7 +60,7 @@ model Point {
   updatedAt DateTime @updatedAt
   published Boolean  @default(false)
   title     String
-  content   String
+  content   Json
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
 }

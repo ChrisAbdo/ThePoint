@@ -34,16 +34,16 @@ export default function Navbar() {
           </Link>
           <div className="hidden md:flex md:gap-x-12">
             <Link
-              href="/upload-project"
+              href="/create"
               prefetch={false}
               className={cn(
                 "text-sm font-light transition-colors hover:text-foreground/80",
-                pathname === "/upload-project"
+                pathname === "/create"
                   ? "text-foreground"
                   : "text-foreground/60",
               )}
             >
-              Upload Project
+              Create
             </Link>
           </div>
         </div>

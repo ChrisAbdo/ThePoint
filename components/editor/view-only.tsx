@@ -26,9 +26,8 @@ const extensions = [...defaultExtensions, slashCommand];
 
 interface EditorProp {
   initialValue?: JSONContent;
-  onChange: (value: JSONContent) => void;
 }
-const Editor = ({ initialValue, onChange }: EditorProp) => {
+const ViewOnly = ({ initialValue }: EditorProp) => {
   const [openNode, setOpenNode] = useState(false);
   const [openColor, setOpenColor] = useState(false);
   const [openLink, setOpenLink] = useState(false);
@@ -36,6 +35,7 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
   return (
     <EditorRoot>
       <EditorContent
+        editable={false}
         className="border p-4 rounded-xl"
         {...(initialValue && { initialContent: initialValue })}
         extensions={extensions}
@@ -51,7 +51,6 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
           },
         }}
         onUpdate={({ editor }) => {
-          onChange(editor.getJSON());
           console.log(editor.getJSON());
         }}
         slotAfter={<ImageResizer />}
@@ -103,4 +102,4 @@ const Editor = ({ initialValue, onChange }: EditorProp) => {
   );
 };
 
-export default Editor;
+export default ViewOnly;
