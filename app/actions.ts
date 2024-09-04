@@ -15,29 +15,92 @@ async function getSession() {
   }
   return sessionCache;
 }
-
 export async function createPoint(formData: FormData) {
   const session = await getSession();
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
+  const category = formData.get("category") as string;
 
-  const title = String(formData.get("title"));
-  const content = String(formData.get("content"));
-  const contentObject = JSON.parse(content);
-
+  console.log("Received data:", { title, content, category }); // Debug log
   const authorId = session?.user.id;
 
+  if (!title || !content || !category) {
+    console.error("Missing required fields");
+    return { error: "Missing required fields" };
+  }
+
   try {
-    await prisma.point.create({
+    const point = await prisma.point.create({
       data: {
         title,
-        content: contentObject, // Store the parsed object, not the string
+        content,
+        category,
         authorId,
       },
     });
-  } catch (error: any) {
-    return {
-      error: error.message,
-    };
+
+    console.log("Point created:", point); // Debug log
+    revalidatePath("/profile");
+    return { success: true, point };
+  } catch (error) {
+    console.error("Error creating point:", error);
+    return { error: "Failed to create point", details: error.message };
   }
-  revalidatePath("/profile");
-  redirect("/profile");
+}
+
+export async function createCategory(name: string) {
+  const session = await getSession();
+  const authorId = session?.user.id;
+
+  if (!name || !authorId) {
+    console.error("Missing required fields");
+    return { error: "Missing required fields" };
+  }
+
+  try {
+    const category = await prisma.category.create({
+      data: {
+        name,
+        users: {
+          connect: { id: authorId },
+        },
+      },
+    });
+
+    console.log("Category created:", category);
+    revalidatePath("/profile");
+    return { success: true, category };
+  } catch (error) {
+    console.error("Error creating category:", error);
+    return { error: "Failed to create category", details: error.message };
+  }
+}
+
+export async function getCategories() {
+  const session = await getSession();
+  const userId = session?.user.id;
+
+  if (!userId) {
+    return { error: "User not authenticated" };
+  }
+
+  try {
+    const categories = await prisma.category.findMany({
+      where: {
+        users: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
+
+    return { success: true, categories };
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return { error: "Failed to fetch categories", details: error.message };
+  }
 }

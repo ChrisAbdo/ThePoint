@@ -13,6 +13,16 @@ export default async function Point({ params }: { params: { id: string } }) {
       author: true,
     },
   });
+
+  if (!point) {
+    return <div>Point not found</div>;
+  }
+
+  // Parse the content if it's stored as a string
+  const content =
+    typeof point.content === "string"
+      ? JSON.parse(point.content)
+      : point.content;
   return (
     <div>
       <div className="bg-background py-6">
@@ -26,6 +36,7 @@ export default async function Point({ params }: { params: { id: string } }) {
                 <AvatarFallback></AvatarFallback>
               </Avatar>
               <p>{point?.author.name}</p>
+              <p>{point?.category}</p>
             </div>
           </div>
 
@@ -38,7 +49,7 @@ export default async function Point({ params }: { params: { id: string } }) {
         </h1>
 
         <div className="mt-2" />
-        <ViewOnly initialValue={point?.content as JSONContent} />
+        <ViewOnly initialValue={content as JSONContent} />
       </div>
     </div>
   );

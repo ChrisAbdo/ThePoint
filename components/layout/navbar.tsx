@@ -1,81 +1,169 @@
-"use client";
+import {
+  Bird,
+  Book,
+  Bot,
+  CircleDotDashed,
+  Code2,
+  Dot,
+  LifeBuoy,
+  Plus,
+  Rabbit,
+  Settings,
+  Settings2,
+  Share,
+  SquareTerminal,
+  SquareUser,
+  Triangle,
+  Turtle,
+} from "lucide-react";
+import { ReactNode } from "react";
 
-import React from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { ChatBubbleIcon, DotFilledIcon } from "@radix-ui/react-icons";
+import { IconHistory } from "../ui/icons";
+import ProfileDropdown from "../auth/profile-dropdown";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { DotIcon, RocketIcon } from "@radix-ui/react-icons";
-import { useSession } from "next-auth/react";
 
-import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import AuthDrawer from "@/components/auth/auth-drawer";
-import ProfileDropdown from "@/components/auth/profile-dropdown";
+export const description =
+  "An AI playground with a sidebar navigation and a main content area. The playground has a header with a settings drawer and a share button. The sidebar has navigation links and a user menu. The main content area shows a form to configure the model and messages.";
 
-export default function Navbar() {
-  const pathname = usePathname();
-
-  const { data: session } = useSession();
-
+export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav
-        className="flex items-center justify-between px-3 py-3"
-        aria-label="Global"
-      >
-        <div className="flex items-center gap-x-12">
-          <Link href="/" className="flex items-center">
-            <DotIcon className="h-5 w-5 text-foreground" />
-            <span className="overflow-auto font-semibold leading-tight tracking-tight">
-              The Point
-            </span>
-            <Badge variant="secondary" className="rounded-sm ml-2">
-              Beta
-            </Badge>
-          </Link>
-          <div className="hidden md:flex md:gap-x-12">
-            {session ? (
-              <Link
-                href="/create"
-                prefetch={false}
-                className={cn(
-                  "text-sm font-light transition-colors hover:text-foreground/80",
-                  pathname === "/create"
-                    ? "text-foreground"
-                    : "text-foreground/60",
-                )}
+    <div className=" w-full">
+      <aside className="fixed inset-y-0 left-0 z-20 flex h-full w-[53px] flex-col border-r">
+        <div className="border-b p-2">
+          <Button variant="ghost" size="icon" aria-label="Home">
+            <CircleDotDashed className="size-5 fill-foreground" />
+          </Button>
+        </div>
+        <nav className="grid gap-1 p-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {/* <Button
+                variant="outline"
+                size="icon"
+                className="rounded-lg"
+                aria-label="New point"
               >
-                Create
+                <Plus className="size-5" />
+              </Button> */}
+              <Link href="/create">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-lg"
+                  aria-label="New point"
+                >
+                  <Plus className="size-5" />
+                </Button>
               </Link>
-            ) : null}
-            {session ? (
-              <Link
-                href="/profile"
-                prefetch={false}
-                className={cn(
-                  "text-sm font-light transition-colors hover:text-foreground/80",
-                  pathname === "/profile"
-                    ? "text-foreground"
-                    : "text-foreground/60",
-                )}
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              New Point
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-lg"
+                aria-label="History"
               >
-                Profile
-              </Link>
-            ) : null}
-          </div>
-        </div>
-        <div className="flex lg:hidden">
-          <button
-            type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-          >
-            <span className="sr-only">Open main menu</span>
-            {/* <Menu className="h-6 w-6" aria-hidden="true" /> */}
-          </button>
-        </div>
-        <div className="flex items-center space-x-1">
-          {session ? <ProfileDropdown /> : <AuthDrawer text="Log In" />}
-        </div>
-      </nav>
-    </header>
+                <IconHistory className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              History
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-lg"
+                aria-label="API"
+              >
+                <Code2 className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              API
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-lg"
+                aria-label="Documentation"
+              >
+                <Book className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              Documentation
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-lg"
+                aria-label="Settings"
+              >
+                <Settings2 className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              Settings
+            </TooltipContent>
+          </Tooltip>
+        </nav>
+        <nav className="mt-auto grid gap-1 p-2">
+          {/* <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="mt-auto rounded-lg"
+                aria-label="Account"
+              >
+                <SquareUser className="size-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              Account
+            </TooltipContent>
+          </Tooltip> */}
+          <ProfileDropdown />
+        </nav>
+      </aside>
+    </div>
   );
 }

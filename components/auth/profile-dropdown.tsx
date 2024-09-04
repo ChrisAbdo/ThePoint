@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,19 +28,23 @@ export default function ProfileDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="ghost" size="icon">
           <Image
-            className="h-6 w-6 select-none rounded-full ring-1 ring-zinc-100/10 transition-opacity duration-300 hover:opacity-80"
-            src={session?.user.image}
+            className="h-6 w-6 select-none rounded-full ring-1 ring-zinc-100/10"
+            src={`https://avatar.vercel.sh/${session?.user.name}`}
             alt="avatar"
             height={48}
             width={48}
           />
-
-          <span className="ml-2 font-light">{session?.user.name}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent
+        className="w-56 mb-2"
+        align="center"
+        side="right"
+        sideOffset={4}
+        forceMount
+      >
         <DropdownMenuItem className="flex justify-between">
           <div className="text-xs font-medium">{session?.user.name}</div>
           <Badge>Member</Badge>

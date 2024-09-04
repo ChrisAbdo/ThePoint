@@ -4,10 +4,12 @@ import "./globals.css";
 import "./prosemirror.css";
 
 import { AuthProvider } from "@/lib/providers/auth-provider";
-import Navbar from "@/components/layout/navbar";
+import { Navbar } from "@/components/layout/navbar";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { Container } from "@/components/layout/container";
 import { Toaster } from "@/components/ui/sonner";
+import Nav from "@/components/layout/nav";
+import { TooltipProvider } from "@/components/ui/tooltip";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -30,8 +32,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Navbar />
-            <Container>{children}</Container>
+            <TooltipProvider>
+              <Nav />
+              <div className="grid w-full pl-[53px]">{children}</div>
+            </TooltipProvider>
             <Toaster position="top-center" />
           </ThemeProvider>
         </body>

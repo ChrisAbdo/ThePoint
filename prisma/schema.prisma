@@ -44,6 +44,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   points        Point[]
+  categories    Category[]
 }
 
 model VerificationToken {
@@ -63,4 +64,13 @@ model Point {
   content   Json
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
+  category  Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  points    Point[]
+  users     User[]  
 }
