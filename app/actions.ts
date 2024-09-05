@@ -50,7 +50,6 @@ export async function createPoint(formData: FormData) {
 }
 
 export async function createCategory(formData: FormData) {
-  const session = await getSession();
   const name = formData.get("name") as string;
 
   console.log("Received data:", { name }); // Debug log
@@ -67,7 +66,7 @@ export async function createCategory(formData: FormData) {
       },
     });
   
-    console.log("Category created:", category); // Debug log
+    console.log("Category created:", category); 
     revalidatePath("/profile");
     return { success: true, category };
   } catch (error) {

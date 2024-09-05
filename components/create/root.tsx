@@ -18,7 +18,6 @@ export default function Root({ categories }: { categories: any[] }) {
   const [value, setValue] = useState<JSONContent>(defaultValue);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const category = searchParams.get("category") || "";
   const [selectedCategory, setSelectedCategory] = useState("General");
 
   const handleSubmit = async (formData: FormData) => {
@@ -55,7 +54,7 @@ export default function Root({ categories }: { categories: any[] }) {
 
           <Separator className="mt-2" />
 
-          <div className="sm:col-span-4">
+          <div className="flex-1 sm:flex-[0.25]">
             <label
               htmlFor="category"
               className="block text-sm font-medium leading-6 text-primary"
@@ -66,7 +65,7 @@ export default function Root({ categories }: { categories: any[] }) {
               <CategorySwitcher
                 categories={categories}
                 onChange={(categoryId) => setSelectedCategory(categoryId)}
-              />{" "}
+              />
             </div>
           </div>
 
@@ -78,19 +77,22 @@ export default function Root({ categories }: { categories: any[] }) {
             }}
           >
             <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="title"
-                  className="block text-sm font-medium leading-6 text-primary"
-                >
-                  Title
-                </label>
-                <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                    <Input
-                      name="title"
-                      placeholder="How to make a real-time chat app with Next.js"
-                    />
+              <div className="sm:col-span-6 flex items-center justify-between space-x-4">
+                <div className="flex-1">
+                  <label
+                    htmlFor="title"
+                    className="block text-sm font-medium leading-6 text-primary"
+                  >
+                    Title
+                  </label>
+                  <div className="mt-2">
+                    <div className="flex rounded-md shadow-sm sm:max-w-md">
+                      <Input
+                        name="title"
+                        className="w-full"
+                        placeholder="How to make a real-time chat app with Next.js"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
