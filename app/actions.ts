@@ -15,6 +15,7 @@ async function getSession() {
   }
   return sessionCache;
 }
+
 export async function createPoint(formData: FormData) {
   const session = await getSession();
   const title = formData.get("title") as string;
@@ -24,7 +25,7 @@ export async function createPoint(formData: FormData) {
   console.log("Received data:", { title, content, category }); // Debug log
   const authorId = session?.user.id;
 
-  if (!title || !content) {
+  if (!title || !content || !category) {
     console.error("Missing required fields");
     return { error: "Missing required fields" };
   }
@@ -34,7 +35,7 @@ export async function createPoint(formData: FormData) {
       data: {
         title,
         content,
-        category: "Test",
+        category,
         authorId
       },
     });

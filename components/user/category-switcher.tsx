@@ -35,98 +35,101 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { createCategory } from "@/app/actions";
-
-const groups = [
-  {
-    label: "Teams",
-    teams: [
-      {
-        label: "Acme Inc.",
-        value: "acme-inc",
-      },
-      {
-        label: "Monsters Inc.",
-        value: "monsters",
-      },
-    ],
-  },
-];
-
-type Team = (typeof groups)[number]["teams"][number];
 
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
-interface TeamSwitcherProps extends PopoverTriggerProps {}
+interface CategorySwitcherProps extends PopoverTriggerProps {
+  categories: { id: string; name: string }[];
+}
 
-export default function CategorySwitcher({ className }: TeamSwitcherProps) {
+export default function CategorySwitcher({
+  className,
+  categories,
+  onChange,
+}: CategorySwitcherProps) {
+  const allCategories = [
+    { label: "General", value: "General" },
+    ...categories.map((category) => ({
+      label: category.name,
+      value: category.name,
+    })),
+  ];
+
+  const groups = [
+    {
+      label: "Categories",
+      categories: allCategories,
+    },
+  ];
+
+  type Category = (typeof groups)[number]["categories"][number];
+
   const [open, setOpen] = React.useState(false);
-  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
-    groups[0].teams[0]
+  const [showNewCategoryDialog, setShowNewCategoryDialog] =
+    React.useState(false);
+  const [selectedCategory, setSelectedCategory] = React.useState<Category>(
+    allCategories[0]
   );
 
   return (
-    <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
+    <Dialog
+      open={showNewCategoryDialog}
+      onOpenChange={setShowNewCategoryDialog}
+    >
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            aria-label="Select a team"
+            aria-label="Select a category"
             className={cn("w-[200px] justify-between", className)}
           >
             <Avatar className="mr-2 h-5 w-5">
               <AvatarImage
-                src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
-                alt={selectedTeam.label}
+                src={`https://avatar.vercel.sh/${selectedCategory.value}.png`}
+                alt={selectedCategory.label}
                 className="grayscale"
               />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
-            {selectedTeam.label}
+            {selectedCategory.label}
             <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           <Command>
-            <CommandInput placeholder="Search team..." />
+            <CommandInput placeholder="Search category..." />
             <CommandList>
-              <CommandEmpty>No team found.</CommandEmpty>
+              <CommandEmpty>No category found.</CommandEmpty>
               {groups.map((group) => (
                 <CommandGroup key={group.label} heading={group.label}>
-                  {group.teams.map((team) => (
+                  {group.categories.map((category) => (
                     <CommandItem
-                      key={team.value}
+                      key={category.value}
                       onSelect={() => {
-                        setSelectedTeam(team);
+                        setSelectedCategory(category);
                         setOpen(false);
+                        onChange?.(category.value);
                       }}
                       className="text-sm"
                     >
                       <Avatar className="mr-2 h-5 w-5">
                         <AvatarImage
-                          src={`https://avatar.vercel.sh/${team.value}.png`}
-                          alt={team.label}
+                          src={`https://avatar.vercel.sh/${category.value}.png`}
+                          alt={category.label}
                           className="grayscale"
                         />
                         <AvatarFallback>SC</AvatarFallback>
                       </Avatar>
-                      {team.label}
+                      {category.label}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
-                          selectedTeam.value === team.value
+                          selectedCategory.value === category.value
                             ? "opacity-100"
                             : "opacity-0"
                         )}
@@ -143,11 +146,11 @@ export default function CategorySwitcher({ className }: TeamSwitcherProps) {
                   <CommandItem
                     onSelect={() => {
                       setOpen(false);
-                      setShowNewTeamDialog(true);
+                      setShowNewCategoryDialog(true);
                     }}
                   >
                     <PlusCircledIcon className="mr-2 h-5 w-5" />
-                    Create Team
+                    Create Category
                   </CommandItem>
                 </DialogTrigger>
               </CommandGroup>
@@ -158,28 +161,32 @@ export default function CategorySwitcher({ className }: TeamSwitcherProps) {
       <DialogContent>
         <form action={createCategory}>
           <DialogHeader>
-            <DialogTitle>Create team</DialogTitle>
+            <DialogTitle>Create category</DialogTitle>
             <DialogDescription>
-              Add a new team to manage products and customers.
+              Add a new category to organize your content.
             </DialogDescription>
           </DialogHeader>
           <div>
             <div className="space-y-4 py-2 pb-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Team name</Label>
-                <Input id="name" name="name" placeholder="Acme Inc." />
+                <Label htmlFor="name">Category name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  placeholder="Enter category name"
+                />
               </div>
             </div>
           </div>
           <DialogFooter>
             <Button
               variant="outline"
-              onClick={() => setShowNewTeamDialog(false)}
+              onClick={() => setShowNewCategoryDialog(false)}
               type="button"
             >
               Cancel
             </Button>
-            <Button type="submit">Continue</Button>
+            <Button type="submit">Create</Button>
           </DialogFooter>
         </form>
       </DialogContent>
