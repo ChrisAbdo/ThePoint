@@ -45,6 +45,12 @@ import { ChatBubbleIcon, DotFilledIcon } from "@radix-ui/react-icons";
 import { IconHistory } from "../ui/icons";
 import ProfileDropdown from "../auth/profile-dropdown";
 import Link from "next/link";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { HistoryButton } from "./history-button";
 
 export const description =
   "An AI playground with a sidebar navigation and a main content area. The playground has a header with a settings drawer and a share button. The sidebar has navigation links and a user menu. The main content area shows a form to configure the model and messages.";
@@ -86,19 +92,34 @@ export function Navbar() {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-lg"
-                aria-label="History"
-              >
-                <IconHistory className="size-5" />
-              </Button>
+              <Popover>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-lg"
+                        aria-label="History"
+                      >
+                        <IconHistory className="size-5" />
+                      </Button>
+                    </PopoverTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" sideOffset={5}>
+                    History
+                  </TooltipContent>
+                </Tooltip>
+                <PopoverContent side="right">
+                  Place content for the popover here.
+                </PopoverContent>
+              </Popover>
             </TooltipTrigger>
             <TooltipContent side="right" sideOffset={5}>
               History
             </TooltipContent>
           </Tooltip>
+          {/* <HistoryButton /> */}
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
