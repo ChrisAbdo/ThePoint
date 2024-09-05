@@ -24,7 +24,7 @@ export async function createPoint(formData: FormData) {
   console.log("Received data:", { title, content, category }); // Debug log
   const authorId = session?.user.id;
 
-  if (!title || !content || !category) {
+  if (!title || !content) {
     console.error("Missing required fields");
     return { error: "Missing required fields" };
   }
@@ -34,11 +34,11 @@ export async function createPoint(formData: FormData) {
       data: {
         title,
         content,
-        category,
-        authorId,
+        category: "Test",
+        authorId
       },
     });
-
+  
     console.log("Point created:", point); // Debug log
     revalidatePath("/profile");
     return { success: true, point };
@@ -48,11 +48,13 @@ export async function createPoint(formData: FormData) {
   }
 }
 
-export async function createCategory(name: string) {
+export async function createCategory(formData: FormData) {
   const session = await getSession();
-  const authorId = session?.user.id;
+  const name = formData.get("name") as string;
 
-  if (!name || !authorId) {
+  console.log("Received data:", { name }); // Debug log
+
+  if (!name) {
     console.error("Missing required fields");
     return { error: "Missing required fields" };
   }
@@ -61,13 +63,10 @@ export async function createCategory(name: string) {
     const category = await prisma.category.create({
       data: {
         name,
-        users: {
-          connect: { id: authorId },
-        },
       },
     });
-
-    console.log("Category created:", category);
+  
+    console.log("Category created:", category); // Debug log
     revalidatePath("/profile");
     return { success: true, category };
   } catch (error) {
@@ -76,31 +75,4 @@ export async function createCategory(name: string) {
   }
 }
 
-export async function getCategories() {
-  const session = await getSession();
-  const userId = session?.user.id;
 
-  if (!userId) {
-    return { error: "User not authenticated" };
-  }
-
-  try {
-    const categories = await prisma.category.findMany({
-      where: {
-        users: {
-          some: {
-            id: userId,
-          },
-        },
-      },
-      orderBy: {
-        name: "asc",
-      },
-    });
-
-    return { success: true, categories };
-  } catch (error) {
-    console.error("Error fetching categories:", error);
-    return { error: "Failed to fetch categories", details: error.message };
-  }
-}

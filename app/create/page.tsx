@@ -21,27 +21,12 @@ export default function Home() {
   const searchParams = useSearchParams();
   const category = searchParams.get("category") || "";
 
-  useEffect(() => {
-    async function fetchCategories() {
-      const result = await getCategories();
-      if (result.success) {
-        setCategories([
-          { id: "general", name: "General" },
-          ...result.categories,
-        ]);
-      } else {
-        console.error("Failed to fetch categories:", result.error);
-      }
-    }
-    fetchCategories();
-  }, []);
-
   const handleSubmit = async (formData: FormData) => {
-    if (!category) {
-      toast.error("Please select a category");
-      return;
-    }
-    formData.append("category", category);
+    // if (!category) {
+    //   toast.error("Please select a category");
+    //   return;
+    // }
+    // formData.append("category", category);
 
     try {
       const result = await createPoint(formData);
@@ -71,6 +56,18 @@ export default function Home() {
 
           <Separator className="mt-2" />
 
+          <div className="sm:col-span-4">
+            <label
+              htmlFor="category"
+              className="block text-sm font-medium leading-6 text-primary"
+            >
+              Category
+            </label>
+            <div className="mt-2">
+              <CategorySwitcher categories={categories} />
+            </div>
+          </div>
+
           <form
             onSubmit={async (e) => {
               e.preventDefault();
@@ -79,18 +76,6 @@ export default function Home() {
             }}
           >
             <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="category"
-                  className="block text-sm font-medium leading-6 text-primary"
-                >
-                  Category
-                </label>
-                <div className="mt-2">
-                  <CategorySwitcher categories={categories} />
-                </div>
-              </div>
-
               <div className="sm:col-span-4">
                 <label
                   htmlFor="title"

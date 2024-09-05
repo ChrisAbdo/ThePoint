@@ -1,8 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Check, ChevronsUpDown, PlusCircle } from "lucide-react";
+import {
+  CaretSortIcon,
+  CheckIcon,
+  PlusCircledIcon,
+} from "@radix-ui/react-icons";
+
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -10,14 +16,9 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
+  CommandSeparator,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -29,138 +30,159 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getCategories, createCategory } from "@/app/actions";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { createCategory } from "@/app/actions";
 
-export default function CategorySwitcher({ categories = [] }) {
-  const [open, setOpen] = useState(false);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const currentCategory = searchParams.get("category") || "general";
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const result = await getCategories();
-        if (result.success && Array.isArray(result.categories)) {
-          setCategories([
-            { id: "general", name: "General" },
-            ...result.categories,
-          ]);
-        } else {
-          console.error("Failed to fetch categories:", result.error);
-        }
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    }
-    fetchCategories();
-  }, []);
+const groups = [
+  {
+    label: "Teams",
+    teams: [
+      {
+        label: "Acme Inc.",
+        value: "acme-inc",
+      },
+      {
+        label: "Monsters Inc.",
+        value: "monsters",
+      },
+    ],
+  },
+];
 
-  const handleCreateCategory = async () => {
-    if (newCategoryName.trim()) {
-      try {
-        const result = await createCategory(newCategoryName.trim());
-        if (result.success) {
-          setNewCategoryName("");
-          setDialogOpen(false);
-          const updatedCategories = await getCategories();
-          if (
-            updatedCategories.success &&
-            Array.isArray(updatedCategories.categories)
-          ) {
-            setCategories([
-              { id: "general", name: "General" },
-              ...updatedCategories.categories,
-            ]);
-          }
-        } else {
-          console.error("Failed to create category:", result.error);
-        }
-      } catch (error) {
-        console.error("Error creating category:", error);
-      }
-    }
-  };
+type Team = (typeof groups)[number]["teams"][number];
+
+type PopoverTriggerProps = React.ComponentPropsWithoutRef<
+  typeof PopoverTrigger
+>;
+
+interface TeamSwitcherProps extends PopoverTriggerProps {}
+
+export default function CategorySwitcher({ className }: TeamSwitcherProps) {
+  const [open, setOpen] = React.useState(false);
+  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false);
+  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
+    groups[0].teams[0]
+  );
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between"
-        >
-          {currentCategory
-            ? categories.find((category) => category.id === currentCategory)
-                ?.name || "Select category..."
-            : "Select category..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search category..." />
-          <CommandEmpty>No category found.</CommandEmpty>
-          <CommandGroup>
-            {categories.map((category) => (
-              <CommandItem
-                key={category.id}
-                value={category.id}
-                onSelect={() => {
-                  router.push(`/create?category=${category.id}`);
-                  setOpen(false);
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    currentCategory === category.id
-                      ? "opacity-100"
-                      : "opacity-0"
-                  )}
-                />
-                {category.name}
-              </CommandItem>
-            ))}
-          </CommandGroup>
-          <CommandGroup>
-            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline" className="w-full justify-start">
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Create Category
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Create New Category</DialogTitle>
-                  <DialogDescription>
-                    Enter a name for your new category.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Name
-                    </Label>
-                    <Input
-                      id="name"
-                      value={newCategoryName}
-                      onChange={(e) => setNewCategoryName(e.target.value)}
-                      className="col-span-3"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={handleCreateCategory}>Create</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </CommandGroup>
-        </Command>
-      </PopoverContent>
-    </Popover>
+    <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            aria-label="Select a team"
+            className={cn("w-[200px] justify-between", className)}
+          >
+            <Avatar className="mr-2 h-5 w-5">
+              <AvatarImage
+                src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
+                alt={selectedTeam.label}
+                className="grayscale"
+              />
+              <AvatarFallback>SC</AvatarFallback>
+            </Avatar>
+            {selectedTeam.label}
+            <CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-[200px] p-0">
+          <Command>
+            <CommandInput placeholder="Search team..." />
+            <CommandList>
+              <CommandEmpty>No team found.</CommandEmpty>
+              {groups.map((group) => (
+                <CommandGroup key={group.label} heading={group.label}>
+                  {group.teams.map((team) => (
+                    <CommandItem
+                      key={team.value}
+                      onSelect={() => {
+                        setSelectedTeam(team);
+                        setOpen(false);
+                      }}
+                      className="text-sm"
+                    >
+                      <Avatar className="mr-2 h-5 w-5">
+                        <AvatarImage
+                          src={`https://avatar.vercel.sh/${team.value}.png`}
+                          alt={team.label}
+                          className="grayscale"
+                        />
+                        <AvatarFallback>SC</AvatarFallback>
+                      </Avatar>
+                      {team.label}
+                      <CheckIcon
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          selectedTeam.value === team.value
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ))}
+            </CommandList>
+            <CommandSeparator />
+            <CommandList>
+              <CommandGroup>
+                <DialogTrigger asChild>
+                  <CommandItem
+                    onSelect={() => {
+                      setOpen(false);
+                      setShowNewTeamDialog(true);
+                    }}
+                  >
+                    <PlusCircledIcon className="mr-2 h-5 w-5" />
+                    Create Team
+                  </CommandItem>
+                </DialogTrigger>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      <DialogContent>
+        <form action={createCategory}>
+          <DialogHeader>
+            <DialogTitle>Create team</DialogTitle>
+            <DialogDescription>
+              Add a new team to manage products and customers.
+            </DialogDescription>
+          </DialogHeader>
+          <div>
+            <div className="space-y-4 py-2 pb-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Team name</Label>
+                <Input id="name" name="name" placeholder="Acme Inc." />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowNewTeamDialog(false)}
+              type="button"
+            >
+              Cancel
+            </Button>
+            <Button type="submit">Continue</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
