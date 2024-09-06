@@ -20,9 +20,19 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { Share, ShareIcon, Trash } from "lucide-react";
 
 export function HistoryButton({ history }) {
   const router = useRouter();
@@ -62,8 +72,32 @@ export function HistoryButton({ history }) {
                   }}
                   className="flex items-center justify-between"
                 >
-                  {item.title}
-                  <Badge>{item.category}</Badge>
+                  <>{item.title}</>
+                  <div className="flex gap-1">
+                    <Badge>{item.category}</Badge>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <Button
+                          variant="ghost"
+                          size="xs"
+                          className="rounded-lg"
+                          aria-label="More"
+                        >
+                          <DotsVerticalIcon className="size-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" sideOffset={5}>
+                        <DropdownMenuItem>
+                          <ShareIcon className="size-4 mr-4" />
+                          Share Chat
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="focus:bg-red-100">
+                          <Trash className="size-4 mr-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>

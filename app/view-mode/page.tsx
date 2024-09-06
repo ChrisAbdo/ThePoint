@@ -16,7 +16,7 @@ export default async function Home() {
         return (
           <React.Fragment key={point.id}>
             <ViewOnly initialValue={content as JSONContent} />
-            {index < points.length - 1 && <Separator className="m-4" />}
+            {index < points.length - 1 && <Separator className="my-4" />}
           </React.Fragment>
         );
       })}
