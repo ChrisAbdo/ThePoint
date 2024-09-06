@@ -1,61 +1,22 @@
-import {
-  Bird,
-  Book,
-  Bot,
-  CircleDotDashed,
-  Code2,
-  Dot,
-  LifeBuoy,
-  Plus,
-  Rabbit,
-  Settings,
-  Settings2,
-  Share,
-  SquareTerminal,
-  SquareUser,
-  Triangle,
-  Turtle,
-} from "lucide-react";
-import { ReactNode } from "react";
-
+import { Book, CircleDotDashed, Code2, Plus, Settings2 } from "lucide-react";
+import * as React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerDescription,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ChatBubbleIcon, DotFilledIcon } from "@radix-ui/react-icons";
-import { IconHistory } from "../ui/icons";
-import ProfileDropdown from "../auth/profile-dropdown";
+import ProfileDropdown from "@/components/auth/profile-dropdown";
 import Link from "next/link";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { HistoryButton } from "./history-button";
+import { prisma } from "@/prisma/db";
 
-export const description =
-  "An AI playground with a sidebar navigation and a main content area. The playground has a header with a settings drawer and a share button. The sidebar has navigation links and a user menu. The main content area shows a form to configure the model and messages.";
-
-export function Navbar() {
+export async function Navbar() {
+  const history = await prisma.point.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
   return (
     <div className=" w-full">
       <aside className="fixed inset-y-0 left-0 z-20 flex h-full w-[53px] flex-col border-r">
@@ -67,14 +28,6 @@ export function Navbar() {
         <nav className="grid gap-1 p-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              {/* <Button
-                variant="outline"
-                size="icon"
-                className="rounded-lg"
-                aria-label="New point"
-              >
-                <Plus className="size-5" />
-              </Button> */}
               <Link href="/create">
                 <Button
                   variant="outline"
@@ -90,36 +43,9 @@ export function Navbar() {
               New Point
             </TooltipContent>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Popover>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-lg"
-                        aria-label="History"
-                      >
-                        <IconHistory className="size-5" />
-                      </Button>
-                    </PopoverTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent side="right" sideOffset={5}>
-                    History
-                  </TooltipContent>
-                </Tooltip>
-                <PopoverContent side="right">
-                  Place content for the popover here.
-                </PopoverContent>
-              </Popover>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              History
-            </TooltipContent>
-          </Tooltip>
-          {/* <HistoryButton /> */}
+
+          <HistoryButton history={history} />
+
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

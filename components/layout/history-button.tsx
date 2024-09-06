@@ -14,25 +14,21 @@ import {
 import { useState } from "react";
 import {
   Command,
-  CommandInput,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { cn } from "@/lib/utils";
+import { Badge } from "../ui/badge";
+import { useRouter } from "next/navigation";
 
-const historyItems = [
-  { id: 1, label: "Fix Tooltip Popover Combo" },
-  { id: 2, label: "Tooltip Error Explanation" },
-  { id: 3, label: "Category Switcher Error" },
-  { id: 4, label: "TailwindUI to Shadcnui" },
-  { id: 5, label: "Collapsible Sidebar Design" },
-  { id: 6, label: "Vercel to Railway Migration" },
-  { id: 7, label: "Vercel FFmpeg Error" },
-];
-
-export function HistoryButton() {
+export function HistoryButton({ history }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-
+  const [value, setValue] = useState("");
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <Tooltip>
@@ -52,23 +48,27 @@ export function HistoryButton() {
           History
         </TooltipContent>
       </Tooltip>
-      <PopoverContent className="w-[300px] p-0" side="right">
+      <PopoverContent className="w-[325px] p-0" align="start" side="right">
         <Command>
-          <CommandInput placeholder="Search history..." />
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup>
-            {historyItems.map((item) => (
-              <CommandItem
-                key={item.id}
-                onSelect={() => {
-                  console.log(`Selected: ${item.label}`);
-                  setOpen(false);
-                }}
-              >
-                {item.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandInput placeholder="Search framework..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandGroup>
+              {history.map((item) => (
+                <CommandItem
+                  key={item.title}
+                  value={item.title}
+                  onSelect={(currentValue) => {
+                    router.push(`/point/${item.id}`);
+                  }}
+                  className="flex items-center justify-between"
+                >
+                  {item.title}
+                  <Badge>{item.category}</Badge>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
