@@ -36,7 +36,7 @@ const ViewOnly = ({ initialValue }: EditorProp) => {
     <EditorRoot>
       <EditorContent
         editable={false}
-        className="border p-4 rounded-xl"
+        className="p-4 rounded-xl"
         {...(initialValue && { initialContent: initialValue })}
         extensions={extensions}
         editorProps={{
