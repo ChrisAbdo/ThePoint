@@ -4,9 +4,7 @@ import "./globals.css";
 import "./prosemirror.css";
 
 import { AuthProvider } from "@/lib/providers/auth-provider";
-import { Navbar } from "@/components/layout/navbar";
 import { ThemeProvider } from "@/lib/providers/theme-provider";
-import { Container } from "@/components/layout/container";
 import { Toaster } from "@/components/ui/sonner";
 import Nav from "@/components/layout/nav";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -34,7 +32,9 @@ export default function RootLayout({
           >
             <TooltipProvider>
               <Nav />
-              <div className="grid w-full pl-[53px]">{children}</div>
+              <div className="grid w-full pl-[53px]  mx-auto max-w-5xl">
+                {children}
+              </div>
             </TooltipProvider>
             <Toaster position="top-center" />
           </ThemeProvider>

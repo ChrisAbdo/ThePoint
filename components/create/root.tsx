@@ -39,7 +39,7 @@ export default function Root({ categories }: { categories: any[] }) {
     }
   };
   return (
-    <div className="p-6 mx-auto max-w-5xl w-full">
+    <div className="p-6">
       <div className="space-y-12">
         <div className="pb-12">
           <h2 className="text-base font-semibold leading-7 text-primary">

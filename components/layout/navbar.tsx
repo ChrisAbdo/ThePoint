@@ -55,14 +55,16 @@ export async function Navbar() {
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="rounded-lg"
-                aria-label="API"
-              >
-                <BookOpenText className="size-5" />
-              </Button>
+              <Link href="/view-mode">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-lg"
+                  aria-label="API"
+                >
+                  <BookOpenText className="size-5" />
+                </Button>
+              </Link>
             </TooltipTrigger>
             <TooltipContent side="right" sideOffset={5}>
               View Mode
