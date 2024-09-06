@@ -20,9 +20,8 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { CheckIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
-import { Badge } from "../ui/badge";
+
+import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 
 export function HistoryButton({ history }) {
@@ -58,7 +57,7 @@ export function HistoryButton({ history }) {
                 <CommandItem
                   key={item.title}
                   value={item.title}
-                  onSelect={(currentValue) => {
+                  onSelect={() => {
                     router.push(`/point/${item.id}`);
                   }}
                   className="flex items-center justify-between"

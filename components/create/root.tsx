@@ -10,14 +10,11 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import CategorySwitcher from "@/components/user/category-switcher";
 
 export default function Root({ categories }: { categories: any[] }) {
-  const { data: session } = useSession();
   const [value, setValue] = useState<JSONContent>(defaultValue);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState("General");
 
   const handleSubmit = async (formData: FormData) => {
@@ -42,7 +39,7 @@ export default function Root({ categories }: { categories: any[] }) {
     }
   };
   return (
-    <div className="p-6">
+    <div className="p-6 mx-auto max-w-5xl w-full">
       <div className="space-y-12">
         <div className="pb-12">
           <h2 className="text-base font-semibold leading-7 text-primary">
@@ -52,7 +49,7 @@ export default function Root({ categories }: { categories: any[] }) {
             Anyone with the link can view this point.
           </p>
 
-          <Separator className="mt-2" />
+          <Separator className="my-4" />
 
           <div className="flex-1 sm:flex-[0.25]">
             <label

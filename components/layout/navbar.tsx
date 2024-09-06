@@ -1,4 +1,11 @@
-import { Book, CircleDotDashed, Code2, Plus, Settings2 } from "lucide-react";
+import {
+  Book,
+  BookOpenText,
+  CircleDotDashed,
+  Code2,
+  Plus,
+  Settings2,
+} from "lucide-react";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +26,7 @@ export async function Navbar() {
   });
   return (
     <div className=" w-full">
-      <aside className="fixed inset-y-0 left-0 z-20 flex h-full w-[53px] flex-col border-r">
+      <aside className="fixed bg-gray-50 dark:bg-neutral-900 inset-y-0 left-0 z-20 flex h-full w-[53px] flex-col border-r">
         <div className="border-b p-2">
           <Button variant="ghost" size="icon" aria-label="Home">
             <CircleDotDashed className="size-5 fill-foreground" />
@@ -54,11 +61,11 @@ export async function Navbar() {
                 className="rounded-lg"
                 aria-label="API"
               >
-                <Code2 className="size-5" />
+                <BookOpenText className="size-5" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right" sideOffset={5}>
-              API
+              View Mode
             </TooltipContent>
           </Tooltip>
           <Tooltip>
@@ -93,21 +100,6 @@ export async function Navbar() {
           </Tooltip>
         </nav>
         <nav className="mt-auto grid gap-1 p-2">
-          {/* <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="mt-auto rounded-lg"
-                aria-label="Account"
-              >
-                <SquareUser className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={5}>
-              Account
-            </TooltipContent>
-          </Tooltip> */}
           <ProfileDropdown />
         </nav>
       </aside>
