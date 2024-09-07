@@ -13,9 +13,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/options";
+import ToolbarExpandable from "@/components/view-mode/toolbar";
 
 export default async function Home() {
-  const points = await prisma.point.findMany();
+  const session = await getServerSession(authOptions);
+  const points = await prisma.point.findMany({
+    where: {
+      authorId: session?.user?.id,
+    },
+    include: {
+      author: true,
+    },
+  });
   return (
     <div>
       {points.map((point, index) => {
@@ -33,12 +44,15 @@ export default async function Home() {
               <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
                 <div className="ml-4 mt-4">
                   <h3 className="text-base font-semibold leading-6 text-gray-900">
-                    Job Postings
+                    {point.title}
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">
+                  {/* <p className="mt-1 text-sm text-gray-500">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit quam
                     corrupti consectetur.
-                  </p>
+                  </p> */}
+                  <time className="text-sm text-gray-500">
+                    {new Date(point.createdAt).toLocaleDateString()}
+                  </time>
                 </div>
                 <div className="ml-4 mt-4 flex items-center space-x-2">
                   <Button variant="outline">Edit</Button>
@@ -65,6 +79,8 @@ export default async function Home() {
           </React.Fragment>
         );
       })}
+
+      <ToolbarExpandable />
     </div>
   );
 }
