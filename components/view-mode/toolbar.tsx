@@ -25,78 +25,6 @@ const transition = {
   duration: 0.25,
 };
 
-const ITEMS = [
-  {
-    id: 1,
-    label: "Calendar",
-    title: <CalendarIcon className="size-5" />,
-    content: (
-      <div className="w-fit">
-        <Calendar mode="single" className="rounded-md border shadow" />
-      </div>
-    ),
-  },
-  {
-    id: 2,
-    label: "AI Assistant",
-    title: <MagicWandIcon className="size-5" />,
-    content: <div className="w-fit">test</div>,
-  },
-  {
-    id: 3,
-    label: "Bookmarks",
-    title: <BookmarkIcon className="size-5" />,
-    content: (
-      <div className="flex flex-col space-y-4 h-[300px]">
-        <div className="flex flex-col text-background">
-          <span>Chat with AI Assistant</span>
-        </div>
-        <ScrollArea className="h-[200px] pr-2">
-          <div className="space-y-2">
-            <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
-              <Bot className="size-4 mr-2" />
-              <p className="break-words mt-0.5">
-                Ask anything about your Points
-              </p>
-            </div>
-
-            <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
-              <PersonIcon className="size-4 mr-2" />
-              <p className="break-words mt-0.5">
-                Hey, Im having trouble with my account.
-              </p>
-            </div>
-          </div>
-        </ScrollArea>
-        <div className="flex-grow"></div>
-        <div className="flex">
-          <Input className="w-full" placeholder="Type your message" />
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: 4,
-    label: "Export",
-    title: <DownloadIcon className="size-5" />,
-    content: (
-      <div className="flex flex-col space-y-4">
-        <div className="flex flex-col text-background">
-          <span>Export Point</span>
-        </div>
-        <div className="flex gap-1">
-          <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
-            PDF
-          </Button>
-          <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
-            Markdown
-          </Button>
-        </div>
-      </div>
-    ),
-  },
-];
-
 export default function ToolbarExpandable() {
   const [date, setDate] = useState<Date | Date[]>(new Date());
   const [active, setActive] = useState<number | null>(null);
@@ -127,6 +55,83 @@ export default function ToolbarExpandable() {
       setContainerWidth("185px");
     }
   }, [isOpen]);
+
+  const ITEMS = [
+    {
+      id: 1,
+      label: "Calendar",
+      title: <CalendarIcon className="size-5" />,
+      content: (
+        <div className="flex flex-col space-y-4 items-center rounded-md">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            className="dark text-white"
+          />
+        </div>
+      ),
+    },
+    {
+      id: 2,
+      label: "AI Assistant",
+      title: <MagicWandIcon className="size-5" />,
+      content: (
+        <div className="flex flex-col space-y-4 h-[300px]">
+          <div className="flex flex-col text-background">
+            <span>Chat with AI Assistant</span>
+          </div>
+          <ScrollArea className="h-[200px] pr-2">
+            <div className="space-y-2">
+              <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
+                <Bot className="size-4 mr-2" />
+                <p className="break-words mt-0.5">
+                  Ask anything about your Points
+                </p>
+              </div>
+
+              <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
+                <PersonIcon className="size-4 mr-2" />
+                <p className="break-words mt-0.5">
+                  Hey, Im having trouble with my account.
+                </p>
+              </div>
+            </div>
+          </ScrollArea>
+          <div className="flex-grow"></div>
+          <div className="flex">
+            <Input className="w-full" placeholder="Type your message" />
+          </div>
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      label: "Bookmarks",
+      title: <BookmarkIcon className="size-5" />,
+      content: <div className="w-fit">test</div>,
+    },
+    {
+      id: 4,
+      label: "Export",
+      title: <DownloadIcon className="size-5" />,
+      content: (
+        <div className="flex flex-col space-y-4">
+          <div className="flex flex-col text-background">
+            <span>Export Point</span>
+          </div>
+          <div className="flex gap-1">
+            <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
+              PDF
+            </Button>
+            <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
+              Markdown
+            </Button>
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   return (
     <MotionConfig transition={transition}>
