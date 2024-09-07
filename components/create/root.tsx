@@ -61,6 +61,7 @@ export default function Root({ categories }: { categories: any[] }) {
             <div className="mt-2">
               <CategorySwitcher
                 categories={categories}
+                // @ts-ignore
                 onChange={(categoryId) => setSelectedCategory(categoryId)}
               />
             </div>
