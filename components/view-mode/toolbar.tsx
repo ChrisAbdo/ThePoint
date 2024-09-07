@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { BookmarkIcon, MagicWandIcon, Share1Icon } from "@radix-ui/react-icons";
 import { CalendarIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 const transition = {
   type: "spring",
@@ -35,18 +36,14 @@ const ITEMS = [
     label: "Bookmarks",
     title: <BookmarkIcon className="size-5" />,
     content: (
-      <div className="flex flex-col space-y-4">
-        <div className="flex flex-col">
-          <div className="space-y-1 text-background">
-            <span>Bookmarks</span>
-          </div>
+      <div className="flex flex-col space-y-4 h-[300px]">
+        <div className="flex flex-col text-background">
+          <span>Chat with AI Assistant</span>
         </div>
-        <button
-          className="relative h-8 w-full scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 px-2 text-sm text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98]"
-          type="button"
-        >
-          Manage documents
-        </button>
+        <div className="flex-grow"></div>
+        <div className="flex">
+          <Input className="" placeholder="Type your message" />
+        </div>
       </div>
     ),
   },
@@ -96,10 +93,10 @@ export default function ToolbarExpandable() {
   useEffect(() => {
     if (isOpen) {
       // Set a fixed width when open, adjust this value as needed
-      setContainerWidth("400px");
+      setContainerWidth("500px");
     } else {
       // Reset to auto width when closed
-      setContainerWidth("auto");
+      setContainerWidth("185px");
     }
   }, [isOpen]);
 
