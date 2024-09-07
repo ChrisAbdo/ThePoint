@@ -1,33 +1,24 @@
 "use server";
-//
+
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
+import { Session } from "next-auth";
 
 import { prisma } from "@/prisma/db";
 import { authOptions } from "./api/auth/[...nextauth]/options";
-import { redirect } from "next/navigation";
-
-let sessionCache: any = null;
-
-async function getSession() {
-  if (!sessionCache) {
-    sessionCache = await getServerSession(authOptions);
-  }
-  return sessionCache;
-}
 
 export async function createPoint(formData: FormData) {
-  const session = await getSession();
+  const session = (await getServerSession(authOptions)) as Session | null;
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
   const category = formData.get("category") as string;
 
   console.log("Received data:", { title, content, category }); // Debug log
-  const authorId = session?.user.id;
+  const authorId = session?.user?.id;
 
-  if (!title || !content || !category) {
-    console.error("Missing required fields");
-    return { error: "Missing required fields" };
+  if (!title || !content || !category || !authorId) {
+    console.error("Missing required fields or user not authenticated");
+    return { error: "Missing required fields or user not authenticated" };
   }
 
   try {
@@ -53,6 +44,7 @@ export async function createPoint(formData: FormData) {
 }
 
 export async function createCategory(formData: FormData) {
+  const session = (await getServerSession(authOptions)) as Session | null;
   const name = formData.get("name") as string;
 
   console.log("Received data:", { name }); // Debug log
@@ -60,6 +52,11 @@ export async function createCategory(formData: FormData) {
   if (!name) {
     console.error("Missing required fields");
     return { error: "Missing required fields" };
+  }
+
+  if (!session?.user?.id) {
+    console.error("User not authenticated");
+    return { error: "User not authenticated" };
   }
 
   try {
