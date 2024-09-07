@@ -38,8 +38,10 @@ export default async function Home() {
     new Set(safePoints.map((point) => point.category))
   );
 
+  console.log(categories);
+
   return (
-    <div>
+    <div className="flex flex-col h-screen overflow-hidden">
       <CategoryPanel points={safePoints} categories={categories} />
       <ToolbarExpandable />
     </div>

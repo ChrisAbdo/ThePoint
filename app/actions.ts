@@ -70,7 +70,8 @@ export async function createCategory(formData: FormData) {
     });
 
     console.log("Category created:", category);
-    revalidatePath("/profile");
+    revalidatePath("/view-mode");
+
     return { success: true, category };
   } catch (error) {
     console.error("Error creating category:", error);

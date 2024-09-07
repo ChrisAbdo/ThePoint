@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/lib/providers/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Nav from "@/components/layout/nav";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import ContentWrapper from "@/components/layout/content-wrapper";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -32,9 +34,7 @@ export default function RootLayout({
           >
             <TooltipProvider>
               <Nav />
-              <div className="grid w-full pl-[53px]  mx-auto max-w-5xl">
-                {children}
-              </div>
+              <ContentWrapper>{children}</ContentWrapper>
             </TooltipProvider>
             <Toaster position="top-center" />
           </ThemeProvider>
