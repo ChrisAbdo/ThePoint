@@ -4,6 +4,8 @@ import { CategoryPanel } from "@/components/view-mode/category-panel";
 import { prisma } from "@/prisma/db";
 import ToolbarExpandable from "@/components/view-mode/toolbar";
 
+export const experimental_ppr = true;
+
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
