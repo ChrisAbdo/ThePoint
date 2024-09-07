@@ -13,11 +13,22 @@ import ProfileDropdown from "@/components/auth/profile-dropdown";
 
 import { prisma } from "@/prisma/db";
 import NavLinks from "./nav-links";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 
 export async function Navbar() {
+  // const history = await prisma.point.findMany({
+  //   orderBy: {
+  //     createdAt: "desc",
+  //   },
+  // });
+  const session = await getServerSession(authOptions);
   const history = await prisma.point.findMany({
-    orderBy: {
-      createdAt: "desc",
+    where: {
+      authorId: session?.user?.id,
+    },
+    include: {
+      author: true,
     },
   });
   return (

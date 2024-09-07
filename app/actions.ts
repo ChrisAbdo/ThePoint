@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
 
 import { prisma } from "@/prisma/db";
-import { authOptions } from "@/lib/auth/auth-options";
+import { authOptions } from "./api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
 
 let sessionCache: any = null;

@@ -20,8 +20,8 @@ interface HistoryItem {
 export default function NavLinks({ history }: { history: HistoryItem[] }) {
   const pathname = usePathname();
   return (
-    <nav className="grid gap-1 p-2">
-      <Tooltip>
+    <nav className="grid gap-2 p-2">
+      <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <Link href="/create">
             <Button
@@ -41,7 +41,7 @@ export default function NavLinks({ history }: { history: HistoryItem[] }) {
 
       <HistoryButton history={history} />
 
-      <Tooltip>
+      <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <Link href="/view-mode">
             <Button
@@ -62,7 +62,7 @@ export default function NavLinks({ history }: { history: HistoryItem[] }) {
           View Mode
         </TooltipContent>
       </Tooltip>
-      <Tooltip>
+      <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <Button
             variant="ghost"
@@ -77,7 +77,7 @@ export default function NavLinks({ history }: { history: HistoryItem[] }) {
           Documentation
         </TooltipContent>
       </Tooltip>
-      <Tooltip>
+      <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <Button
             variant="ghost"

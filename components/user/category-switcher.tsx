@@ -92,7 +92,6 @@ export default function CategorySwitcher({
               <AvatarImage
                 src={`https://avatar.vercel.sh/${selectedCategory.value}.png`}
                 alt={selectedCategory.label}
-                className="grayscale"
               />
               <AvatarFallback>SC</AvatarFallback>
             </Avatar>
@@ -122,7 +121,6 @@ export default function CategorySwitcher({
                         <AvatarImage
                           src={`https://avatar.vercel.sh/${category.value}.png`}
                           alt={category.label}
-                          className="grayscale"
                         />
                         <AvatarFallback>SC</AvatarFallback>
                       </Avatar>

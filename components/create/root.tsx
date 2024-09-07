@@ -88,7 +88,7 @@ export default function Root({ categories }: { categories: any[] }) {
                       <Input
                         name="title"
                         className="w-full"
-                        placeholder="How to make a real-time chat app with Next.js"
+                        placeholder="Name your Point"
                       />
                     </div>
                   </div>

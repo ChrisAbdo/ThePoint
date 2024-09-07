@@ -1,6 +1,6 @@
 import DisplayPosts from "@/components/profile/display-posts";
 import ProfileHeader from "@/components/profile/header";
-import { authOptions } from "@/lib/auth/auth-options";
+import { authOptions } from "../api/auth/[...nextauth]/options";
 import { prisma } from "@/prisma/db";
 import { getServerSession } from "next-auth/next";
 
