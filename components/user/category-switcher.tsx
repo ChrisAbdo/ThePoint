@@ -113,6 +113,7 @@ export default function CategorySwitcher({
                       onSelect={() => {
                         setSelectedCategory(category);
                         setOpen(false);
+                        // @ts-ignore
                         onChange?.(category.value);
                       }}
                       className="text-sm"
