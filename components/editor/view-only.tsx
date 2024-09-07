@@ -2,14 +2,13 @@
 
 import React from "react";
 import { EditorRoot, EditorContent, type JSONContent } from "novel";
-import { defaultExtensions } from "./extensions";
-import { slashCommand } from "./slash-command";
-
-const extensions = [...defaultExtensions, slashCommand];
+import { defaultExtensions } from "./vo-extensions";
 
 interface EditorProp {
   initialValue?: JSONContent;
 }
+
+const extensions = [...defaultExtensions];
 
 export default function ViewOnly({ initialValue }: EditorProp) {
   return (
