@@ -38,7 +38,7 @@ export function CategoryPanel({ points, categories }: CategoryPanelProps) {
 
   return (
     <div className="">
-      <ScrollArea className="pb-1">
+      <ScrollArea>
         <div className="flex space-x-2 overflow-x-auto p-3 bg-transparent">
           {categories.map((category, index) => (
             <button
