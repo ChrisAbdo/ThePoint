@@ -25,6 +25,7 @@ export default function Topbar() {
   return (
     <div className="flex flex-1 flex-col">
       <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
+        {/* @ts-ignore */}
         <CategorySwitcher />
         <Drawer>
           <DrawerTrigger asChild>
