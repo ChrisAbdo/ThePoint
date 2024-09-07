@@ -41,7 +41,10 @@
     "react": "^19.0.0-rc-a03254bc-20240905",
     "react-day-picker": "8.10.1",
     "react-dom": "^19.0.0-rc-a03254bc-20240905",
+    "react-intersection-observer": "^9.13.1",
     "react-use-measure": "^2.1.1",
+    "react-virtualized-auto-sizer": "^1.0.24",
+    "react-window": "^1.8.10",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
@@ -49,13 +52,14 @@
     "vaul": "^0.9.1"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-window": "^1.8.8",
+    "eslint": "^8",
+    "eslint-config-next": "^15.0.0-rc.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "^15.0.0-rc.0"
+    "typescript": "^5"
   }
 }

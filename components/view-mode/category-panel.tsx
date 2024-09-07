@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useCallback } from "react";
 import { TransitionPanel } from "./transition-panel";
-import ViewOnly from "@/components/editor/view-only";
+const ViewOnly = React.lazy(() => import("@/components/editor/view-only"));
 import { JSONContent } from "novel";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
@@ -37,7 +37,7 @@ export function CategoryPanel({ points, categories }: CategoryPanelProps) {
   }, []);
 
   return (
-    <div className="">
+    <div>
       <ScrollArea>
         <div className="flex space-x-2 overflow-x-auto p-3 bg-transparent">
           {categories.map((category, index) => (
