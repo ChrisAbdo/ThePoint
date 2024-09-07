@@ -4,5 +4,6 @@ import { getServerSession } from "next-auth/next";
 
 export default async function Nav() {
   const session = await getServerSession(authOptions);
+  // @ts-ignore
   return <Navbar session={session} />;
 }
