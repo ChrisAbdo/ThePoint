@@ -5,7 +5,11 @@ import useMeasure from "react-use-measure";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { cn } from "@/lib/utils";
 import useClickOutside from "@/lib/hooks/useClickOutside";
-import { Folder, MessageCircle, User, WalletCards } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import { BookmarkIcon, MagicWandIcon, Share1Icon } from "@radix-ui/react-icons";
+import { CalendarIcon, DownloadIcon } from "@radix-ui/react-icons";
+import { Button } from "../ui/button";
 
 const transition = {
   type: "spring",
@@ -16,50 +20,25 @@ const transition = {
 const ITEMS = [
   {
     id: 1,
-    label: "User",
-    title: <User className="h-5 w-5" />,
-    content: (
-      <div className="flex flex-col space-y-4">
-        <div className="flex flex-col space-y-1 text-zinc-700">
-          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-400" />
-          <span>Ibelick</span>
-        </div>
-        <button
-          className="relative h-8 w-full scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 px-2 text-sm text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98]"
-          type="button"
-        >
-          Edit Profile
-        </button>
-      </div>
-    ),
+    label: "Calendar",
+    title: <CalendarIcon className="size-5" />,
+    content: <div className="w-fit">test</div>,
   },
   {
     id: 2,
-    label: "Messages",
-    title: <MessageCircle className="h-5 w-5" />,
-    content: (
-      <div className="flex flex-col space-y-4">
-        <div className="text-zinc-700">You have 3 new messages.</div>
-        <button
-          className="relative h-8 w-full scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 px-2 text-sm text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98]"
-          type="button"
-        >
-          View more
-        </button>
-      </div>
-    ),
+    label: "AI Assistant",
+    title: <MagicWandIcon className="size-5" />,
+    content: <div className="w-fit">test</div>,
   },
   {
     id: 3,
-    label: "Documents",
-    title: <Folder className="h-5 w-5" />,
+    label: "Bookmarks",
+    title: <BookmarkIcon className="size-5" />,
     content: (
       <div className="flex flex-col space-y-4">
-        <div className="flex flex-col text-zinc-700">
-          <div className="space-y-1">
-            <div>Project_Proposal.pdf</div>
-            <div>Meeting_Notes.docx</div>
-            <div>Financial_Report.xls</div>
+        <div className="flex flex-col">
+          <div className="space-y-1 text-background">
+            <span>Bookmarks</span>
           </div>
         </div>
         <button
@@ -73,32 +52,35 @@ const ITEMS = [
   },
   {
     id: 4,
-    label: "Wallet",
-    title: <WalletCards className="h-5 w-5" />,
+    label: "Export",
+    title: <DownloadIcon className="size-5" />,
     content: (
       <div className="flex flex-col space-y-4">
-        <div className="flex flex-col text-zinc-700">
-          <span>Current Balance</span>
-          <span>$1,250.32</span>
+        <div className="flex flex-col text-background">
+          <span>Export Point</span>
         </div>
-        <button
-          className="relative h-8 w-full scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 px-2 text-sm text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98]"
-          type="button"
-        >
-          View Transactions
-        </button>
+        <div className="flex gap-1">
+          <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
+            PDF
+          </Button>
+          <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
+            Markdown
+          </Button>
+        </div>
       </div>
     ),
   },
 ];
 
 export default function ToolbarExpandable() {
+  const [date, setDate] = useState<Date | Date[]>(new Date());
   const [active, setActive] = useState<number | null>(null);
   const [contentRef, { height: heightContent }] = useMeasure();
   const [menuRef, { width: widthContainer }] = useMeasure();
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState(0);
+  const [containerWidth, setContainerWidth] = useState("auto");
 
   useClickOutside(ref, () => {
     setIsOpen(false);
@@ -111,11 +93,23 @@ export default function ToolbarExpandable() {
     setMaxWidth(widthContainer);
   }, [widthContainer, maxWidth]);
 
+  useEffect(() => {
+    if (isOpen) {
+      // Set a fixed width when open, adjust this value as needed
+      setContainerWidth("400px");
+    } else {
+      // Reset to auto width when closed
+      setContainerWidth("auto");
+    }
+  }, [isOpen]);
+
   return (
     <MotionConfig transition={transition}>
-      <div
+      <motion.div
         className="fixed bottom-8 left-1/2 transform -translate-x-1/2"
         ref={ref}
+        animate={{ width: containerWidth }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <div className="h-full w-full rounded-xl border border-zinc-950/10 bg-primary shadow-lg">
           <div className="overflow-hidden">
@@ -126,9 +120,7 @@ export default function ToolbarExpandable() {
                   initial={{ height: 0 }}
                   animate={{ height: heightContent || 0 }}
                   exit={{ height: 0 }}
-                  style={{
-                    width: maxWidth,
-                  }}
+                  transition={transition}
                 >
                   <div ref={contentRef} className="p-2">
                     {ITEMS.map((item) => {
@@ -157,35 +149,37 @@ export default function ToolbarExpandable() {
               ) : null}
             </AnimatePresence>
           </div>
-          <div className="flex space-x-2 p-2" ref={menuRef}>
-            {ITEMS.map((item) => (
-              <button
-                key={item.id}
-                aria-label={item.label}
-                className={cn(
-                  "relative flex h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-background transition-colors dark:hover:bg-[#ececee] hover:bg-[#FFFFFF17] hover:text-background focus-visible:ring-2 active:scale-[0.98]",
-                  active === item.id
-                    ? "dark:bg-[#ececee] bg-[#FFFFFF17] text-background"
-                    : ""
-                )}
-                type="button"
-                onClick={() => {
-                  if (!isOpen) setIsOpen(true);
-                  if (active === item.id) {
-                    setIsOpen(false);
-                    setActive(null);
-                    return;
-                  }
+          <div className="flex justify-center p-2" ref={menuRef}>
+            <div className="flex space-x-2">
+              {ITEMS.map((item) => (
+                <button
+                  key={item.id}
+                  aria-label={item.label}
+                  className={cn(
+                    "relative flex h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-background transition-colors dark:hover:bg-[#ececee] hover:bg-[#FFFFFF17] hover:text-background focus-visible:ring-2 active:scale-[0.98]",
+                    active === item.id
+                      ? "dark:bg-[#ececee] bg-[#FFFFFF17] text-background"
+                      : ""
+                  )}
+                  type="button"
+                  onClick={() => {
+                    if (!isOpen) setIsOpen(true);
+                    if (active === item.id) {
+                      setIsOpen(false);
+                      setActive(null);
+                      return;
+                    }
 
-                  setActive(item.id);
-                }}
-              >
-                {item.title}
-              </button>
-            ))}
+                    setActive(item.id);
+                  }}
+                >
+                  {item.title}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </MotionConfig>
   );
 }
