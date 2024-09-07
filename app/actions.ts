@@ -36,16 +36,19 @@ export async function createPoint(formData: FormData) {
         title,
         content,
         category,
-        authorId
+        authorId,
       },
     });
-  
+
     console.log("Point created:", point); // Debug log
     revalidatePath("/profile");
     return { success: true, point };
   } catch (error) {
     console.error("Error creating point:", error);
-    return { error: "Failed to create point", details: error.message };
+    return {
+      error: "Failed to create point",
+      details: error instanceof Error ? error.message : String(error),
+    };
   }
 }
 
@@ -65,14 +68,15 @@ export async function createCategory(formData: FormData) {
         name,
       },
     });
-  
-    console.log("Category created:", category); 
+
+    console.log("Category created:", category);
     revalidatePath("/profile");
     return { success: true, category };
   } catch (error) {
     console.error("Error creating category:", error);
-    return { error: "Failed to create category", details: error.message };
+    return {
+      error: "Failed to create category",
+      details: error instanceof Error ? error.message : String(error),
+    };
   }
 }
-
-
