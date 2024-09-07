@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot } from "lucide-react";
+import { Separator } from "../ui/separator";
 
 const transition = {
   type: "spring",
@@ -77,10 +78,11 @@ export default function ToolbarExpandable() {
       label: "AI Assistant",
       title: <MagicWandIcon className="size-5" />,
       content: (
-        <div className="flex flex-col space-y-4 h-[300px]">
+        <div className="flex flex-col space-y-2 h-[300px]">
           <div className="flex flex-col text-background">
             <span>Chat with AI Assistant</span>
           </div>
+          <Separator className="dark" />
           <ScrollArea className="h-[200px] pr-2">
             <div className="space-y-2">
               <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
@@ -100,7 +102,7 @@ export default function ToolbarExpandable() {
           </ScrollArea>
           <div className="flex-grow"></div>
           <div className="flex">
-            <Input className="w-full" placeholder="Type your message" />
+            <Input className="w-full dark" placeholder="Type your message" />
           </div>
         </div>
       ),
@@ -121,10 +123,18 @@ export default function ToolbarExpandable() {
             <span>Export Point</span>
           </div>
           <div className="flex gap-1">
-            <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
+            <Button
+              size="sm"
+              variant="secondary"
+              className="w-full dark hover:bg-[#FFFFFF17]"
+            >
               PDF
             </Button>
-            <Button size="sm" className="w-full hover:bg-[#FFFFFF17]">
+            <Button
+              size="sm"
+              variant="secondary"
+              className="w-full dark hover:bg-[#FFFFFF17]"
+            >
               Markdown
             </Button>
           </div>

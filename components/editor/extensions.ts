@@ -10,6 +10,8 @@ import {
   AIHighlight,
 } from "novel/extensions";
 import { UploadImagesPlugin } from "novel/plugins";
+import GlobalDragHandle from "tiptap-extension-global-drag-handle";
+import AutoJoiner from "tiptap-extension-auto-joiner";
 
 import { cx } from "class-variance-authority";
 
@@ -18,7 +20,7 @@ const placeholder = Placeholder;
 const tiptapLink = TiptapLink.configure({
   HTMLAttributes: {
     class: cx(
-      "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer",
+      "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer"
     ),
   },
 });
@@ -86,7 +88,7 @@ const starterKit = StarterKit.configure({
   codeBlock: {
     HTMLAttributes: {
       class: cx(
-        "rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium",
+        "rounded-md bg-muted text-muted-foreground border p-5 font-mono font-medium"
       ),
     },
   },
@@ -114,4 +116,11 @@ export const defaultExtensions = [
   taskItem,
   horizontalRule,
   aiHighlight,
+  GlobalDragHandle.configure({
+    dragHandleWidth: 20, // default
+    scrollTreshold: 100, // default
+  }),
+  AutoJoiner.configure({
+    elementsToJoin: ["bulletList", "orderedList"], // default
+  }),
 ];
