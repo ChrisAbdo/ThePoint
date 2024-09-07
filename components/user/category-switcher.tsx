@@ -41,8 +41,9 @@ type PopoverTriggerProps = React.ComponentPropsWithoutRef<
   typeof PopoverTrigger
 >;
 
-interface CategorySwitcherProps extends PopoverTriggerProps {
+interface CategorySwitcherProps extends Omit<PopoverTriggerProps, "onChange"> {
   categories: { id: string; name: string }[];
+  onChange: (categoryValue: string) => void;
 }
 
 export default function CategorySwitcher({
@@ -112,8 +113,7 @@ export default function CategorySwitcher({
                       onSelect={() => {
                         setSelectedCategory(category);
                         setOpen(false);
-                        // @ts-ignore
-                        onChange?.(category.value);
+                        onChange(category.value);
                       }}
                       className="text-sm"
                     >

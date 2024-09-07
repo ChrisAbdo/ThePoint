@@ -13,12 +13,24 @@ export async function createPoint(formData: FormData) {
   const content = formData.get("content") as string;
   const category = formData.get("category") as string;
 
-  console.log("Received data:", { title, content, category }); // Debug log
+  console.log("Received data:", { title, content, category });
   const authorId = session?.user?.id;
 
-  if (!title || !content || !category || !authorId) {
-    console.error("Missing required fields or user not authenticated");
-    return { error: "Missing required fields or user not authenticated" };
+  if (!title) {
+    console.error("Missing title");
+    return { error: "Title is required" };
+  }
+  if (!content) {
+    console.error("Missing content");
+    return { error: "Content is required" };
+  }
+  if (!category) {
+    console.error("Missing category");
+    return { error: "Category is required" };
+  }
+  if (!authorId) {
+    console.error("User not authenticated");
+    return { error: "User authentication is required" };
   }
 
   try {
@@ -31,7 +43,7 @@ export async function createPoint(formData: FormData) {
       },
     });
 
-    console.log("Point created:", point); // Debug log
+    console.log("Point created:", point);
     revalidatePath("/profile");
     return { success: true, point };
   } catch (error) {

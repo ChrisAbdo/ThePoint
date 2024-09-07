@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import "./prosemirror.css";
 
@@ -9,8 +8,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Nav from "@/components/layout/nav";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import ContentWrapper from "@/components/layout/content-wrapper";
-
-const inter = Inter({ subsets: ["latin"] });
+import { GeistSans } from "geist/font/sans";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,9 +21,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={GeistSans.className}>
       <AuthProvider>
-        <body className={inter.className}>
+        <body>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
