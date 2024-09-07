@@ -40,17 +40,17 @@ export default async function Home() {
             <time className="text-sm text-gray-500">
               {new Date(point.createdAt).toLocaleDateString()}
             </time> */}
-            <div className="bg-white px-4 py-5 sm:px-6">
+            <div className="bg-background px-4 py-5 sm:px-6">
               <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
                 <div className="ml-4 mt-4">
-                  <h3 className="text-base font-semibold leading-6 text-gray-900">
+                  <h3 className="text-base font-semibold leading-6 text-primary">
                     {point.title}
                   </h3>
                   {/* <p className="mt-1 text-sm text-gray-500">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit quam
                     corrupti consectetur.
                   </p> */}
-                  <time className="text-sm text-gray-500">
+                  <time className="text-sm text-muted-foreground">
                     {new Date(point.createdAt).toLocaleDateString()}
                   </time>
                 </div>

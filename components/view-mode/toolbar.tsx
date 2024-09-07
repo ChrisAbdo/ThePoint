@@ -7,10 +7,17 @@ import { cn } from "@/lib/utils";
 import useClickOutside from "@/lib/hooks/useClickOutside";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import { BookmarkIcon, MagicWandIcon, Share1Icon } from "@radix-ui/react-icons";
+import {
+  BookmarkIcon,
+  MagicWandIcon,
+  PersonIcon,
+  Share1Icon,
+} from "@radix-ui/react-icons";
 import { CalendarIcon, DownloadIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Bot } from "lucide-react";
 
 const transition = {
   type: "spring",
@@ -23,7 +30,11 @@ const ITEMS = [
     id: 1,
     label: "Calendar",
     title: <CalendarIcon className="size-5" />,
-    content: <div className="w-fit">test</div>,
+    content: (
+      <div className="w-fit">
+        <Calendar mode="single" className="rounded-md border shadow" />
+      </div>
+    ),
   },
   {
     id: 2,
@@ -40,9 +51,26 @@ const ITEMS = [
         <div className="flex flex-col text-background">
           <span>Chat with AI Assistant</span>
         </div>
+        <ScrollArea className="h-[200px] pr-2">
+          <div className="space-y-2">
+            <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
+              <Bot className="size-4 mr-2" />
+              <p className="break-words mt-0.5">
+                Ask anything about your Points
+              </p>
+            </div>
+
+            <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
+              <PersonIcon className="size-4 mr-2" />
+              <p className="break-words mt-0.5">
+                Hey, Im having trouble with my account.
+              </p>
+            </div>
+          </div>
+        </ScrollArea>
         <div className="flex-grow"></div>
         <div className="flex">
-          <Input className="" placeholder="Type your message" />
+          <Input className="w-full" placeholder="Type your message" />
         </div>
       </div>
     ),
