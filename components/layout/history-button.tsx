@@ -34,10 +34,15 @@ import { useRouter } from "next/navigation";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Share, ShareIcon, Trash } from "lucide-react";
 
-export function HistoryButton({ history }) {
+interface HistoryItem {
+  id: string;
+  title: string;
+  category: string;
+}
+
+export function HistoryButton({ history }: { history: HistoryItem[] }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <Tooltip>
@@ -63,10 +68,10 @@ export function HistoryButton({ history }) {
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandGroup>
-              {history.map((item) => (
+              {history.map((item: HistoryItem) => (
                 <CommandItem
-                  key={item.title}
-                  value={item.title}
+                  key={item.title + item.category}
+                  value={`${item.title} ${item.category}`}
                   onSelect={() => {
                     router.push(`/point/${item.id}`);
                   }}
@@ -74,7 +79,7 @@ export function HistoryButton({ history }) {
                 >
                   <>{item.title}</>
                   <div className="flex gap-1">
-                    <Badge>{item.category}</Badge>
+                    <Badge variant="outline">{item.category}</Badge>
                     <DropdownMenu>
                       <DropdownMenuTrigger>
                         <Button
