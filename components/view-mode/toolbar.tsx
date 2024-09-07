@@ -27,7 +27,8 @@ const transition = {
 };
 
 export default function ToolbarExpandable() {
-  const [date, setDate] = useState<Date | Date[]>(new Date());
+  const [date, setDate] = useState<Date | undefined>(new Date());
+
   const [active, setActive] = useState<number | null>(null);
   const [contentRef, { height: heightContent }] = useMeasure();
   const [menuRef, { width: widthContainer }] = useMeasure();
