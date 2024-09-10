@@ -1,24 +1,34 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+  Suspense,
+} from "react";
+import { useReducedMotion } from "framer-motion";
+import dynamic from "next/dynamic";
 import useMeasure from "react-use-measure";
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
 import { cn } from "@/lib/utils";
 import useClickOutside from "@/lib/hooks/useClickOutside";
 import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import {
-  BookmarkIcon,
-  MagicWandIcon,
-  PersonIcon,
-  Share1Icon,
-} from "@radix-ui/react-icons";
+import { BookmarkIcon, MagicWandIcon } from "@radix-ui/react-icons";
 import { CalendarIcon, DownloadIcon } from "@radix-ui/react-icons";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Bot } from "lucide-react";
-import { Separator } from "../ui/separator";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "../ui/skeleton";
+
+// Correctly import the AIContext component
+// const AIContext = dynamic(
+//   () => import("./ai-context").then((mod) => mod.AIContext),
+//   {
+//     loading: () => <Skeleton className="w-full h-12" />,
+//   }
+// );
+import { AIContext } from "./ai-context";
 
 const transition = {
   type: "spring",
@@ -26,9 +36,24 @@ const transition = {
   duration: 0.25,
 };
 
-export default function ToolbarExpandable() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+type Point = {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  createdAt: Date;
+};
 
+type CategoryPanelProps = {
+  points: Point[];
+  categories: string[];
+};
+
+export default function ToolbarExpandable({
+  points,
+  categories,
+}: CategoryPanelProps) {
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const [active, setActive] = useState<number | null>(null);
   const [contentRef, { height: heightContent }] = useMeasure();
   const [menuRef, { width: widthContainer }] = useMeasure();
@@ -37,6 +62,8 @@ export default function ToolbarExpandable() {
   const [maxWidth, setMaxWidth] = useState(0);
   const [containerWidth, setContainerWidth] = useState("auto");
 
+  const shouldReduceMotion = useReducedMotion();
+
   useClickOutside(ref, () => {
     setIsOpen(false);
     setActive(null);
@@ -44,108 +71,95 @@ export default function ToolbarExpandable() {
 
   useEffect(() => {
     if (!widthContainer || maxWidth > 0) return;
-
     setMaxWidth(widthContainer);
   }, [widthContainer, maxWidth]);
 
   useEffect(() => {
-    if (isOpen) {
-      // Set a fixed width when open, adjust this value as needed
-      setContainerWidth("500px");
-    } else {
-      // Reset to auto width when closed
-      setContainerWidth("185px");
-    }
+    setContainerWidth(isOpen ? "500px" : "185px");
   }, [isOpen]);
 
-  const ITEMS = [
-    {
-      id: 1,
-      label: "Calendar",
-      title: <CalendarIcon className="size-5" />,
-      content: (
-        <div className="flex flex-col space-y-4 items-center rounded-md">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="dark text-white"
-          />
-        </div>
-      ),
-    },
-    {
-      id: 2,
-      label: "AI Assistant",
-      title: <MagicWandIcon className="size-5" />,
-      content: (
-        <div className="flex flex-col space-y-2 h-[300px]">
-          <div className="flex flex-col text-background">
-            <span>Chat with AI Assistant</span>
+  const ITEMS = useMemo(
+    () => [
+      {
+        id: 1,
+        label: "Calendar",
+        title: <CalendarIcon className="size-5" />,
+        content: (
+          <div className="flex flex-col space-y-4 items-center rounded-md">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="dark text-white"
+            />
           </div>
-          <Separator className="dark" />
-          <ScrollArea className="h-[200px] pr-2">
-            <div className="space-y-2">
-              <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
-                <Bot className="size-4 mr-2" />
-                <p className="break-words mt-0.5">
-                  Ask anything about your Points
-                </p>
-              </div>
-
-              <div className="flex items-center w-full max-w-fit rounded-lg py-1 text-sm text-background">
-                <PersonIcon className="size-4 mr-2" />
-                <p className="break-words mt-0.5">
-                  Hey, Im having trouble with my account.
-                </p>
-              </div>
+        ),
+      },
+      {
+        id: 2,
+        label: "AI Assistant",
+        title: <MagicWandIcon className="size-5" />,
+        content: (
+          <Suspense fallback={<Skeleton className="w-full" />}>
+            <AIContext points={points} categories={categories} />
+          </Suspense>
+        ),
+      },
+      {
+        id: 3,
+        label: "Bookmarks",
+        title: <BookmarkIcon className="size-5" />,
+        content: <div className="w-fit">Bookmarks content here</div>,
+      },
+      {
+        id: 4,
+        label: "Export",
+        title: <DownloadIcon className="size-5" />,
+        content: (
+          <div className="flex flex-col space-y-4">
+            <div className="flex flex-col text-background">
+              <span>Export Point</span>
             </div>
-          </ScrollArea>
-          <div className="flex-grow"></div>
-          <div className="flex">
-            <Input className="w-full dark" placeholder="Type your message" />
+            <div className="flex gap-1">
+              <Button
+                size="sm"
+                variant="secondary"
+                className="w-full dark hover:bg-[#FFFFFF17]"
+              >
+                PDF
+              </Button>
+              <Button
+                size="sm"
+                variant="secondary"
+                className="w-full dark hover:bg-[#FFFFFF17]"
+              >
+                Markdown
+              </Button>
+            </div>
           </div>
-        </div>
-      ),
+        ),
+      },
+    ],
+    [date, setDate]
+  );
+
+  const handleItemClick = useCallback(
+    (itemId: number) => {
+      if (!isOpen) setIsOpen(true);
+      if (active === itemId) {
+        setIsOpen(false);
+        setActive(null);
+        return;
+      }
+      setActive(itemId);
     },
-    {
-      id: 3,
-      label: "Bookmarks",
-      title: <BookmarkIcon className="size-5" />,
-      content: <div className="w-fit">test</div>,
-    },
-    {
-      id: 4,
-      label: "Export",
-      title: <DownloadIcon className="size-5" />,
-      content: (
-        <div className="flex flex-col space-y-4">
-          <div className="flex flex-col text-background">
-            <span>Export Point</span>
-          </div>
-          <div className="flex gap-1">
-            <Button
-              size="sm"
-              variant="secondary"
-              className="w-full dark hover:bg-[#FFFFFF17]"
-            >
-              PDF
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              className="w-full dark hover:bg-[#FFFFFF17]"
-            >
-              Markdown
-            </Button>
-          </div>
-        </div>
-      ),
-    },
-  ];
+    [isOpen, active]
+  );
 
   return (
-    <MotionConfig transition={transition}>
+    <MotionConfig
+      transition={shouldReduceMotion ? { duration: 0 } : transition}
+    >
       <motion.div
         className="fixed bottom-8 left-1/2 transform -translate-x-1/2"
         ref={ref}
@@ -155,7 +169,7 @@ export default function ToolbarExpandable() {
         <div className="h-full w-full rounded-xl border border-zinc-950/10 bg-primary shadow-lg">
           <div className="overflow-hidden">
             <AnimatePresence initial={false} mode="sync">
-              {isOpen ? (
+              {isOpen && (
                 <motion.div
                   key="content"
                   initial={{ height: 0 }}
@@ -166,7 +180,6 @@ export default function ToolbarExpandable() {
                   <div ref={contentRef} className="p-2">
                     {ITEMS.map((item) => {
                       const isSelected = active === item.id;
-
                       return (
                         <motion.div
                           key={item.id}
@@ -187,7 +200,7 @@ export default function ToolbarExpandable() {
                     })}
                   </div>
                 </motion.div>
-              ) : null}
+              )}
             </AnimatePresence>
           </div>
           <div className="flex justify-center p-2" ref={menuRef}>
@@ -203,16 +216,7 @@ export default function ToolbarExpandable() {
                       : ""
                   )}
                   type="button"
-                  onClick={() => {
-                    if (!isOpen) setIsOpen(true);
-                    if (active === item.id) {
-                      setIsOpen(false);
-                      setActive(null);
-                      return;
-                    }
-
-                    setActive(item.id);
-                  }}
+                  onClick={() => handleItemClick(item.id)}
                 >
                   {item.title}
                 </button>

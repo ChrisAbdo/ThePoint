@@ -43,7 +43,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <CategoryPanel points={safePoints} categories={categories} />
-      <ToolbarExpandable />
+      <ToolbarExpandable points={safePoints} categories={categories} />
     </div>
   );
 }
