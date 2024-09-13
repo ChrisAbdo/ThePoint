@@ -52,11 +52,23 @@ export const TextButtons = () => {
       {items.map((item, index) => (
         <EditorBubbleItem
           key={index}
-          onSelect={(editor) => {
+          onSelect={() => {
+            console.log(`Executing command: ${item.name}`);
             item.command(editor);
+            console.log(`Command executed: ${item.name}`);
           }}
         >
-          <Button size="sm" className="rounded-none" variant="ghost">
+          <Button
+            size="sm"
+            className="rounded-none"
+            variant="ghost"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              console.log(`Button clicked: ${item.name}`);
+              item.command(editor);
+            }}
+          >
             <item.icon
               className={cn("h-4 w-4", {
                 "text-blue-500": item.isActive(editor),
